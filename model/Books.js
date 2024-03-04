@@ -26,11 +26,11 @@ const BookSchema = new Schema({
     type: String,
     required: true,
   },
-  user: { type: Schema.Types.ObjectId, ref: "User" },
+  user: { type: Schema.Types.ObjectId, ref: "Users" },
 });
 
 // model the collection
 
-const Book = mongoose.models.Book || mongoose.model("Book", BookSchema);
+const Books = mongoose.models.Book || mongoose.model("Books", BookSchema);
 
-module.exports = Book;
+module.exports = Books;
