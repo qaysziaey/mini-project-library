@@ -2,7 +2,27 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const BookSchema = new Schema({
-  content: {
+  title: {
+    type: String,
+    required: true,
+  },
+  author: {
+    type: String,
+    required: true,
+  },
+  publishYear: {
+    type: String,
+    required: true,
+  },
+  thumbnail: {
+    type: String,
+    required: true,
+  },
+  rentDuration: {
+    type: String,
+    required: true,
+  },
+  availableCopies: {
     type: String,
     required: true,
   },
