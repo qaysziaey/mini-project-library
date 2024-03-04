@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const Book = require("./model/Books");
+const User = require("./model/Users");
 const connect = require("./lib/connectDB");
 
 const app = express();
@@ -22,13 +23,13 @@ app.get("/", async (req, res) => {
   res.json(books);
 });
 
-// Search by id
-app.get("/:noteId", async (req, res) => {
+// Search Book by id
+app.get("/:bookId", async (req, res) => {
   await connect();
-  const { noteId } = req.params;
+  const { bookId } = req.params;
 
   try {
-    const content = await Book.find({ _id: noteId });
+    const content = await Book.find({ _id: bookId });
     if (!content) {
       return res.json({ message: "Note not found" });
     }
@@ -37,6 +38,34 @@ app.get("/:noteId", async (req, res) => {
   } catch (error) {
     res.status(500).send({ message: "User not found" });
   }
+});
+
+// Search by name
+app.get("/user/:userName", async (req, res) => {
+  await connect();
+  const { userName } = req.params;
+  console.log(userName);
+  try {
+    const content = await User.find({ name: userName });
+    if (!content) {
+      return res.json({ message: "Note not found" });
+    }
+    res.json(content);
+  } catch (error) {
+    res.status(500).send({ message: "User not found" });
+  }
+});
+
+// Get all the Books rented by specific User
+
+app.get("/user/:userId/books", async (req, res) => {
+  await connect();
+  const { userId } = req.params;
+  const books = await Book.find({ user: userId });
+  if (!books) {
+    return res.json({ message: "Books not found" });
+  }
+  res.json(books);
 });
 
 const server = app.listen(PORT, () =>

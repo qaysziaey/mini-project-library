@@ -11,7 +11,7 @@ const BookSchema = new Schema({
     required: true,
   },
   publishYear: {
-    type: String,
+    type: Number,
     required: true,
   },
   thumbnail: {
@@ -19,11 +19,11 @@ const BookSchema = new Schema({
     required: true,
   },
   rentDuration: {
-    type: String,
+    type: Number,
     required: true,
   },
   availableCopies: {
-    type: String,
+    type: Number,
     required: true,
   },
   user: { type: Schema.Types.ObjectId, ref: "Users" },
@@ -31,6 +31,6 @@ const BookSchema = new Schema({
 
 // model the collection
 
-const Books = mongoose.models.Book || mongoose.model("Books", BookSchema);
+const Books = mongoose.models.Books || mongoose.model("Books", BookSchema);
 
 module.exports = Books;
