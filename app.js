@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const connect = require("./lib/connectDB");
+const User = require("./model/User");
 
 const {
   getBooks,
@@ -8,7 +10,11 @@ const {
   createBook,
   deleteBook,
 } = require("./controllers/bookController");
-const { getUsers, getUserByName } = require("./controllers/userController");
+const {
+  createUser,
+  getUsers,
+  getUserByName,
+} = require("./controllers/userController");
 
 const app = express();
 app.use(cors());
@@ -19,19 +25,23 @@ const PORT = process.env.PORT || 3000;
 // Get all the Books
 app.get("/", getBooks);
 
+// Create a Book
+app.post("/book/:id", createBook);
+
 // Search book by id
 app.get("/:bookId", getBookById);
 
 // Delete a Book
 app.delete("/:bookId", deleteBook);
 
-// Get all the Users
-app.get("/users", getUsers);
+// Get all Users
+app.get("/users/users", getUsers);
 
 // Search user by name
-app.get("/user/:userName", getUserByName);
+app.get("/users/:userName", getUserByName);
 
-app.post("/", createBook);
+// Check if the user exists and add the note
+app.post("/users/books/:user", createUser);
 
 const server = app.listen(PORT, () =>
   console.log(`Express app listening on port ${PORT}!`)

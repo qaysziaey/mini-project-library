@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Moby Dick",
+    "thumbnail": "https://images.thalia.media/00/-/d10c2220ad90474eb419146dfc2cde9e/moby-dick-epub-herman-melville.jpeg",
+    "author": "Herman Melville",
+    "publishYear": 1851,
+    "rentDuration": 7,
+    "availableCopies": 3
+  },
+  {
+    "title": "The World of Iche and Fire",
+    "thumbnail": "https://images.thalia.media/-/BF2000-2000/c44942a82c474f4d9ee5bdd19b57a79c/the-world-of-ice-and-fire-gebundene-ausgabe-george-r-r-martin-englisch.jpeg",
+    "author": "George R.R. Martin",
+    "publishYear": 2014,
+    "rentDuration": 7,
+    "availableCopies": 5
+  },
+  {
+    "title": "Just for Fun",
+    "thumbnail": "https://images.thalia.media/-/BF2000-2000/e8a5071b9e3b4f53b793f793e5ecfc1a/just-for-fun-taschenbuch-linus-torvalds-englisch.jpeg",
+    "author": "Linus Torvalds",
+    "publishYear": 2002,
+    "rentDuration": 7,
+    "availableCopies": 2
+  },
+  {
+    "title": "Sherlock Holmes",
+    "thumbnail": "https://images.thalia.media/00/-/c307fd72342045998b7697d83e1bd8f4/sherlock-holmes-bd-1-gebundene-ausgabe-arthur-conan-doyle.jpeg",
+    "author": "Arthur Conan Doyle",
+    "publishYear": 1892,
+    "rentDuration": 7,
+    "availableCopies": 8
+  },
+  {
+    "title": "Alice in Wonderland",
+    "thumbnail": "https://images.thalia.media/00/-/3f61cb950831437abafa376308ba7c90/alice-im-wunderland-alice-in-wonderland-zweisprachige-ausgabe-taschenbuch-lewis-carroll.jpeg",
+    "author": "Lewis Carroll",
+    "publishYear": 1865,
+    "rentDuration": 7,
+    "availableCopies": 2
+  },
+  {
+    "title": "Atlas Shrugged",
+    "thumbnail": "https://m.media-amazon.com/images/I/612URtxh-qL._AC_UF894,1000_QL80_.jpg",
+    "author": "Ayn Rand",
+    "publishYear": 1957,
+    "rentDuration": 7,
+    "availableCopies": 2
+  },
+  {
+    "title": "The Kite Runner",
+    "thumbnail": "https://images.thalia.media/00/-/577d2ec90895425faf55282c3a0b5606/the-kite-runner-taschenbuch-khaled-hosseini-englisch.jpeg",
+    "author": "Khaled Hosseini",
+    "publishYear": 2003,
+    "rentDuration": 7,
+    "availableCopies": 6
+  },
+  {
+    "title": "Atomic Habits",
+    "thumbnail": "https://images.thalia.media/00/-/a4f545e58a85494a8687635f3ab07a05/atomic-habits-gebundene-ausgabe-james-clear-englisch.jpeg",
+    "author": "James Clear",
+    "publishYear": 2018,
+    "rentDuration": 7,
+    "availableCopies": 12
+  }
+]

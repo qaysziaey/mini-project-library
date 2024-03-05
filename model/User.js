@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const UserSchema = new Schema({
   name: { type: String, required: true },
   book: [{ book: { type: Schema.Types.ObjectId, ref: "Book" } }],
-  // currentRental: [{ book: { type: Schema.Types.ObjectId, ref: "Book" } }],
 });
 
 // model the collection

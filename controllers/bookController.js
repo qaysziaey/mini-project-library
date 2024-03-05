@@ -14,9 +14,12 @@ app.use(express.urlencoded({ extended: true }));
 const getBooks = async (req, res) => {
   await connect();
   const books = await Book.find();
+  // const books = await Book.find().populate("user");
+
   if (!books.length) {
     return res.json({ message: "There are no books." });
   }
+  // return res.json(books);
   return res.json(books.map((book) => ({ ...book._doc, id: book._id })));
 };
 
@@ -45,7 +48,6 @@ const deleteBook = async (req, res) => {
   await connect();
   const { bookId } = req.params;
 
-  console.log(bookId);
   if (!mongoose.Types.ObjectId.isValid(bookId)) {
     return res.status(404).send({ message: "Book not found" }).end();
   }
@@ -58,6 +60,7 @@ const deleteBook = async (req, res) => {
   } catch (error) {
     res.status(500).send({ message: "Book not found" });
   }
+  console.log(`Book with id ${bookId} is deleted.`);
 };
 
 // Create a new Book
@@ -72,19 +75,19 @@ const createBook = async (req, res) => {
     availableCopies,
   } = req.body;
 
-  try {
-    const book = await Book.create({
-      title,
-      thumbnail,
-      author,
-      publishYear,
-      rentDuration,
-      availableCopies,
-    });
-  } catch (error) {
-    return res.status(400).json({ message: "User not found" });
-  }
+  const book = await Book.create({
+    title,
+    thumbnail,
+    author,
+    publishYear,
+    rentDuration,
+    availableCopies,
+  });
 
+  if (!book) {
+    return res.status(400).json({ message: "Book did not created" });
+  }
+  console.log(book);
   return res.status(201).json({ message: "Book created successfully" });
 };
 

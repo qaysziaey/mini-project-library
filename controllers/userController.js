@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const Book = require("../model/Book");
 const User = require("../model/User");
 const connect = require("../lib/connectDB");
 const mongoose = require("mongoose");
@@ -12,16 +11,49 @@ app.use(express.urlencoded({ extended: true }));
 
 // Get All the Users
 const getUsers = async (req, res) => {
-  await connect();
-
   const users = await User.find();
 
   if (!users.length) {
-    return res.json({ message: "There are no users." });
+    return res.status(204).send();
   }
 
-  // return res.json(users);
-  return res.json(users.map((user) => ({ ...user._doc, id: user._id })));
+  const sanitizedUsers = users.map((user) => {
+    const { _id, ...sanitizedUser } = user._doc;
+    return { ...sanitizedUser, id: _id };
+  });
+
+  return res.json(sanitizedUsers);
+};
+
+// Create a User
+const createUser = async (req, res) => {
+  await connect();
+  const { user } = req.params;
+
+  // check user exists
+  if (user) {
+    let { _id: userId } = (await User.findOne({ name: user })) || {
+      _id: null,
+    };
+
+    if (!userId) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    console.log(userId);
+    const book = req.body;
+    console.log(book);
+
+    // create new user if it doesnt exists
+    if (userId && book) {
+      const { _id: newUserId } = (await User.findByIdAndUpdate(userId, {
+        $push: { book: { book } },
+      })) || {
+        _id: null,
+      };
+      return res.status(201).json({ user, id: newUserId });
+    }
+  }
+  res.json({ message: "Could not create note, User not found" });
 };
 
 // Search User by name
@@ -44,4 +76,5 @@ const getUserByName = async (req, res) => {
 module.exports = {
   getUsers,
   getUserByName,
+  createUser,
 };
