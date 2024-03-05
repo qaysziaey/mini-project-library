@@ -54,14 +54,19 @@ const createBook = async (req, res) => {
 // Get All the Books
 const getBooks = async (req, res) => {
   await connect();
-  const books = await Book.find();
-  // const books = await Book.find().populate("user");
 
-  if (!books.length) {
+  // const books = await Book.find().populate("users");
+  try {
+    const books = await Book.find({});
+    return res.status(200).json({
+      numberOfBooks: books.length,
+      data: books,
+    });
+  } catch (error) {
+    console.log(error);
     return res.json({ message: "There are no books." });
   }
-  // return res.json(books);
-  return res.json(books.map((book) => ({ ...book._doc, id: book._id })));
+  // return res.json(books.map((book) => ({ ...book._doc, id: book._id })));
 };
 
 // Search Book by id

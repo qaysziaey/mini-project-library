@@ -9,11 +9,14 @@ const {
   getBookById,
   createBook,
   deleteBook,
+  rentBook,
 } = require("./controllers/bookController");
 const {
-  createUser,
-  getUsers,
+  createUserWithBook,
   getUserByName,
+  createNewUser,
+  getAllUsers,
+  deleteUser,
 } = require("./controllers/userController");
 
 const app = express();
@@ -31,17 +34,26 @@ app.get("/", getBooks);
 // Search book by id
 app.get("/:bookId", getBookById);
 
+// Rent a Book
+// app.post("/books/:bookId/:userId", rentBook);
+
 // Delete a Book
 app.delete("/:bookId", deleteBook);
 
 // Get all Users
-app.get("/users/users", getUsers);
+app.get("/users/users", getAllUsers);
 
 // Search user by name
 app.get("/users/:userName", getUserByName);
 
 // Check if the user exists and add the note
-app.post("/users/books/:user", createUser);
+app.post("/users/books/:user", createUserWithBook);
+
+// Create new user
+app.post("/users", createNewUser);
+
+// Delete a user
+app.delete("/users/:userId", deleteUser);
 
 const server = app.listen(PORT, () =>
   console.log(`Express app listening on port ${PORT}!`)
