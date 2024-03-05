@@ -1,9 +1,17 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const Book = require("./model/Books");
-const User = require("./model/Users");
+const Book = require("./model/Book");
+const User = require("./model/User");
 const connect = require("./lib/connectDB");
+const mongoose = require("mongoose");
+const {
+  getBooks,
+  getBookById,
+  createBook,
+  deleteBook,
+} = require("./controllers/bookController");
+const { getUsers, getUserByName } = require("./controllers/userController");
 
 const app = express();
 app.use(cors());
@@ -11,62 +19,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const PORT = 3000;
 
-app.get("/", async (req, res) => {
-  await connect();
+// Get all the Books
+app.get("/", getBooks);
 
-  const books = await Book.find().populate("user", "name");
+// Search book by id
+app.get("/:bookId", getBookById);
 
-  if (!books.length) {
-    return res.json({ message: "Notes not found" });
-  }
+// Delete a Book
+app.delete("/:bookId", deleteBook);
 
-  res.json(books);
-});
+// Get all the Users
+app.get("/users", getUsers);
 
-// Search Book by id
-app.get("/:bookId", async (req, res) => {
-  await connect();
-  const { bookId } = req.params;
+// Search user by name
+app.get("/user/:userName", getUserByName);
 
-  try {
-    const content = await Book.find({ _id: bookId });
-    if (!content) {
-      return res.json({ message: "Note not found" });
-    }
-
-    res.json(content);
-  } catch (error) {
-    res.status(500).send({ message: "User not found" });
-  }
-});
-
-// Search by name
-app.get("/user/:userName", async (req, res) => {
-  await connect();
-  const { userName } = req.params;
-  console.log(userName);
-  try {
-    const content = await User.find({ name: userName });
-    if (!content) {
-      return res.json({ message: "Note not found" });
-    }
-    res.json(content);
-  } catch (error) {
-    res.status(500).send({ message: "User not found" });
-  }
-});
-
-// Get all the Books rented by specific User
-
-app.get("/user/:userId/books", async (req, res) => {
-  await connect();
-  const { userId } = req.params;
-  const books = await Book.find({ user: userId });
-  if (!books) {
-    return res.json({ message: "Books not found" });
-  }
-  res.json(books);
-});
+app.post("/", createBook);
 
 const server = app.listen(PORT, () =>
   console.log(`Express app listening on port ${PORT}!`)
