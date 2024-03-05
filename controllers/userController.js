@@ -162,6 +162,7 @@ const rentBook = async (req, res) => {
 
   // return res.json({ user, book });
 };
+
 module.exports = {
   createUserWithBook,
   getUserByName,
