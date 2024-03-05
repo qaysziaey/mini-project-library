@@ -9,7 +9,6 @@ const {
   getBookById,
   createBook,
   deleteBook,
-  rentBook,
 } = require("./controllers/bookController");
 const {
   createUserWithBook,
@@ -17,6 +16,7 @@ const {
   createNewUser,
   getAllUsers,
   deleteUser,
+  rentBook,
 } = require("./controllers/userController");
 
 const app = express();
@@ -35,7 +35,7 @@ app.get("/", getBooks);
 app.get("/:bookId", getBookById);
 
 // Rent a Book
-// app.post("/books/:bookId/:userId", rentBook);
+app.post("/users/:userId/:bookId", rentBook);
 
 // Delete a Book
 app.delete("/:bookId", deleteBook);

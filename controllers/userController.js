@@ -29,13 +29,14 @@ const createNewUser = async (req, res) => {
 
 // Get All the Users
 const getAllUsers = async (req, res) => {
-  const users = await User.find();
+  const users = await User.find({});
   console.log(users);
+
   if (!users.length) {
     return res.status(204).send();
   }
-  // return res.json(users);
-  return res.json(users.map((user) => ({ ...user._doc, id: user._id })));
+  return res.json(users);
+  // return res.json(users.map((user) => ({ ...user._doc, id: user._id })));
 };
 
 // Create a New User with Book
@@ -110,6 +111,27 @@ const deleteUser = async (req, res) => {
 };
 
 // rent a book to a user
+// const rentBook = async (req, res) => {
+//   await connect();
+//   const { userId, bookId } = req.params;
+//   try {
+//     const user = await User.findOne({ _id: userId });
+//     const book = await Book.findOne({ _id: bookId });
+//     if (!user || !book) {
+//       return res.status(404).json({ message: "User or book not found" });
+//     }
+//     user.book.push(book);
+//     book.users.push(user);
+//     await user.save();
+//     await book.save();
+//     return res.status(200).json({ user, book });
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message });
+//   }
+
+//   // return res.json({ user, book });
+// };
+
 const rentBook = async (req, res) => {
   await connect();
   const { userId, bookId } = req.params;
@@ -119,18 +141,27 @@ const rentBook = async (req, res) => {
     if (!user || !book) {
       return res.status(404).json({ message: "User or book not found" });
     }
-    user.book.push(book);
-    book.users.push(user);
-    await user.save();
-    await book.save();
-    return res.status(200).json({ user, book });
+    const userBook = user.book;
+    if (userBook.includes(book)) {
+      return res.status(400).json({ message: "Book already rented" });
+    }
+    const { _id: newUserId } = (await User.findByIdAndUpdate(userId, {
+      $push: { book: { book } },
+    })) || {
+      _id: null,
+    };
+    const { _id: newBookId } = (await Book.findByIdAndUpdate(bookId, {
+      $push: { users: { user } },
+    })) || {
+      _id: null,
+    };
+    return res.status(201).json({ user, id: newUserId, book, id: newBookId });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 
   // return res.json({ user, book });
 };
-
 module.exports = {
   createUserWithBook,
   getUserByName,
