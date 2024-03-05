@@ -1,10 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 const Book = require("../model/Book");
 const User = require("../model/User");
 const connect = require("../lib/connectDB");
 const mongoose = require("mongoose");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
