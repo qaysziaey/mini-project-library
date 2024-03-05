@@ -16,16 +16,10 @@ const getUsers = async (req, res) => {
   if (!users.length) {
     return res.status(204).send();
   }
-
-  const sanitizedUsers = users.map((user) => {
-    const { _id, ...sanitizedUser } = user._doc;
-    return { ...sanitizedUser, id: _id };
-  });
-
-  return res.json(sanitizedUsers);
+  return res.json(users);
 };
 
-// Create a User
+// Create a New User
 const createUser = async (req, res) => {
   await connect();
   const { user } = req.params;
@@ -39,9 +33,8 @@ const createUser = async (req, res) => {
     if (!userId) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log(userId);
+
     const book = req.body;
-    console.log(book);
 
     // create new user if it doesnt exists
     if (userId && book) {

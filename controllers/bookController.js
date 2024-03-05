@@ -10,6 +10,47 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Create a new Book
+const createBook = async (req, res) => {
+  await connect();
+
+  const {
+    title,
+    thumbnail,
+    author,
+    publishYear,
+    rentDuration,
+    availableCopies,
+  } = req.body;
+  try {
+    if (
+      !title ||
+      !thumbnail ||
+      !author ||
+      !publishYear ||
+      !rentDuration ||
+      !availableCopies
+    ) {
+      return res.status(400).json({ message: "Book did not created" });
+    }
+
+    const newBook = {
+      title,
+      thumbnail,
+      author,
+      publishYear,
+      rentDuration,
+      availableCopies,
+    };
+
+    const book = await Book.create(newBook);
+    return res.status(201).json(book);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "Book did not created" });
+  }
+};
+
 // Get All the Books
 const getBooks = async (req, res) => {
   await connect();
@@ -61,34 +102,6 @@ const deleteBook = async (req, res) => {
     res.status(500).send({ message: "Book not found" });
   }
   console.log(`Book with id ${bookId} is deleted.`);
-};
-
-// Create a new Book
-const createBook = async (req, res) => {
-  await connect();
-  const {
-    title,
-    thumbnail,
-    author,
-    publishYear,
-    rentDuration,
-    availableCopies,
-  } = req.body;
-
-  const book = await Book.create({
-    title,
-    thumbnail,
-    author,
-    publishYear,
-    rentDuration,
-    availableCopies,
-  });
-
-  if (!book) {
-    return res.status(400).json({ message: "Book did not created" });
-  }
-  console.log(book);
-  return res.status(201).json({ message: "Book created successfully" });
 };
 
 module.exports = {

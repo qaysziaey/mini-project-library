@@ -22,11 +22,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 3000;
 
+// Create a Book
+app.post("/books", createBook);
+
 // Get all the Books
 app.get("/", getBooks);
-
-// Create a Book
-app.post("/book/:id", createBook);
 
 // Search book by id
 app.get("/:bookId", getBookById);
