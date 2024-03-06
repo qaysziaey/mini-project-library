@@ -111,27 +111,6 @@ const deleteUser = async (req, res) => {
 };
 
 // rent a book to a user
-// const rentBook = async (req, res) => {
-//   await connect();
-//   const { userId, bookId } = req.params;
-//   try {
-//     const user = await User.findOne({ _id: userId });
-//     const book = await Book.findOne({ _id: bookId });
-//     if (!user || !book) {
-//       return res.status(404).json({ message: "User or book not found" });
-//     }
-//     user.book.push(book);
-//     book.users.push(user);
-//     await user.save();
-//     await book.save();
-//     return res.status(200).json({ user, book });
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message });
-//   }
-
-//   // return res.json({ user, book });
-// };
-
 const rentBook = async (req, res) => {
   await connect();
   const { userId, bookId } = req.params;
@@ -145,6 +124,11 @@ const rentBook = async (req, res) => {
     if (userBook.includes(book)) {
       return res.status(400).json({ message: "Book already rented" });
     }
+    // Check if available copies of the book are greater than zero
+    if (book.availableCopies >= 0) {
+      return res.status(400).json({ message: "No copies available to rent" });
+    }
+
     const { _id: newUserId } = (await User.findByIdAndUpdate(userId, {
       $push: { book: { book } },
     })) || {
@@ -152,6 +136,7 @@ const rentBook = async (req, res) => {
     };
     const { _id: newBookId } = (await Book.findByIdAndUpdate(bookId, {
       $push: { users: { user } },
+      $inc: { availableCopies: -1 }, // Decrease the available copies by 1
     })) || {
       _id: null,
     };
@@ -162,6 +147,8 @@ const rentBook = async (req, res) => {
 
   // return res.json({ user, book });
 };
+
+// Return back a book
 
 module.exports = {
   createUserWithBook,
