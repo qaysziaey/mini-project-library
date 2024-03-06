@@ -29,16 +29,16 @@ const PORT = process.env.PORT || 3000;
 app.post("/books", createBook);
 
 // Get all the Books
-app.get("/", getBooks);
+app.get("/books", getBooks);
 
 // Search book by id
-app.get("/:bookId", getBookById);
+app.get("/books/:bookId", getBookById);
 
 // Rent a Book
 app.post("/users/:userId/:bookId", rentBook);
 
 // Delete a Book
-app.delete("/:bookId", deleteBook);
+app.delete("/books/:bookId", deleteBook);
 
 // Get all Users
 app.get("/users/users", getAllUsers);
